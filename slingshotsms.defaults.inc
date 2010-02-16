@@ -10,6 +10,9 @@ function _slingshotsms_ctools_plugin_api() {
   if ($module == "feeds" && $api == "feeds_importer_default") {
     return array("version" => 1);
   }
+  else if ($module == "keyauth" && $api == "keyauth_key_default") {
+    return array("version" => 1);
+  }
 }
 
 /**
@@ -34,19 +37,34 @@ function _slingshotsms_feeds_importer_default() {
       ),
     ),
     'parser' => array(
-      'plugin_key' => 'FeedsSyndicationParser',
+      'plugin_key' => 'FeedsSlingshotParser',
       'config' => array(),
     ),
     'processor' => array(
-      'plugin_key' => 'FeedsNodeProcessor',
+      'plugin_key' => 'FeedsDataProcessor',
       'config' => array(
-        'content_type' => 'book',
         'update_existing' => 0,
         'expire' => -1,
-        'mappings' => array(),
+        'mappings' => array(
+          '0' => array(
+            'source' => 'title',
+            'target' => 'sender',
+            'unique' => FALSE,
+          ),
+          '1' => array(
+            'source' => 'timestamp',
+            'target' => 'timestamp',
+            'unique' => FALSE,
+          ),
+          '2' => array(
+            'source' => 'description',
+            'target' => 'description',
+            'unique' => FALSE,
+          ),
+        ),
       ),
     ),
-    'content_type' => '',
+    'content_type' => 'slingshotfeed',
     'update' => 0,
     'import_period' => '-1',
     'expire_period' => 3600,
@@ -54,5 +72,21 @@ function _slingshotsms_feeds_importer_default() {
   );
 
   $export['slingshot'] = $feeds_importer;
+  return $export;
+}
+
+/**
+ * Helper to implementation of hook_keyauth_key_default().
+ */
+function _slingshotsms_keyauth_key_default() {
+  $export = array();
+  $keyauth_keys = new stdClass;
+  $keyauth_keys->disabled = FALSE; /* Edit this to true to make a default keyauth_keys disabled initially */
+  $keyauth_keys->api_version = 1;
+  $keyauth_keys->title = 'Slingshot';
+  $keyauth_keys->public_key = 'acf8b2bb295ccb58c1ad4e3a376a81cb';
+  $keyauth_keys->private_key = '6d4c2ff9361f6a0f778794994af952defab4e1df';
+
+  $export['acf8b2bb295ccb58c1ad4e3a376a81cb'] = $keyauth_keys;
   return $export;
 }

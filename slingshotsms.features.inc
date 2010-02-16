@@ -17,3 +17,12 @@ function slingshotsms_feeds_importer_default() {
   $args = func_get_args();
   return call_user_func_array('_slingshotsms_feeds_importer_default', $args);
 }
+
+/**
+ * Implementation of hook_keyauth_key_default().
+ */
+function slingshotsms_keyauth_key_default() {
+  module_load_include('inc', 'slingshotsms', 'slingshotsms.defaults');
+  $args = func_get_args();
+  return call_user_func_array('_slingshotsms_keyauth_key_default', $args);
+}
