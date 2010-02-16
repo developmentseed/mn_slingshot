@@ -50,14 +50,14 @@ function _slingshotsms_feeds_importer_default() {
         'expire' => -1,
         'mappings' => array(
           '0' => array(
-            'source' => 'title',
-            'target' => 'sender',
-            'unique' => FALSE,
-          ),
-          '1' => array(
             'source' => 'timestamp',
             'target' => 'timestamp',
-            'unique' => FALSE,
+            'unique' => 0,
+          ),
+          '1' => array(
+            'source' => 'title',
+            'target' => 'title',
+            'unique' => 0,
           ),
           '2' => array(
             'source' => 'description',
@@ -88,7 +88,7 @@ function _slingshotsms_keyauth_key_default() {
   $keyauth_keys->api_version = 1;
   $keyauth_keys->title = 'Slingshot';
   $keyauth_keys->public_key = 'acf8b2bb295ccb58c1ad4e3a376a81cb';
-  $keyauth_keys->private_key = '6d4c2ff9361f6a0f778794994af952defab4e1df';
+  $keyauth_keys->private_key = 'cdb9381bfde2d9a14acf62c42345da5907b7aa14';
 
   $export['acf8b2bb295ccb58c1ad4e3a376a81cb'] = $keyauth_keys;
   return $export;
