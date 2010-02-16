@@ -1,47 +1,89 @@
 <?php
 
 /**
- * @file
- * Pubsubhubbub subscriber library.
+ * Implementation of hook_menu()
  */
+function slingshotsms_menu() {
+  $items = array();
+
+  // Core OpenLayers settings pages.
+  $items['admin/settings/slingshot'] = array(
+    'title' => 'Slingshot',
+    'description' => 'Assistance for associating a SlingshotSMS server',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('slingshot_config_form'),
+    'access arguments' => array('access content'),
+    'file' => 'slingshotsms_ui.inc',
+    'type' => MENU_NORMAL_ITEM
+  );
+    // Layer type drilldown
+  $items['admin/settings/openlayers/layers/add'] = array(
+    'title' => 'Add',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('openlayers_ui_layers_types'),
+    'access arguments' => array('administer openlayers'),
+    'file' => 'includes/openlayers_ui.layers.inc',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => -10,
+  );
+
+  // Core OpenLayers settings pages.
+  $items['slingshot/%slingshotsms_slingshot_feed/%node'] = array(
+    'page callback' => 'slingshotsms_receive',
+    'page arguments' => array(1, 2),
+    'access arguments' => array('access content'),
+    'file' => 'slingshotsms.inc',
+    'type' => MENU_NORMAL_ITEM
+  );
+
+  return $items;
+}
 
 /**
- * Pubsub subscriber.
+ * Handle a Slingshotsms notification.
+ * @param $importer
+ *  FeedsImporter object
+ * @param $feed_nid
+ *  The node id of the feed node
  */
-class SlingSubscriber {
-  /**
-   * Singleton.
-   *
-   * SlingSubscriber identifies a unique subscription by a domain and a numeric
-   * id. The numeric id is assumed to e unique in its domain.
-   *
-   * @param $domain
-   *   A string that identifies the domain in which $subscriber_id is unique.
-   * @param $subscriber_id
-   *   A numeric subscriber id.
-   * @param PuSHSubscriptionsInterface $subscriptions
-   *   An object to use for storing and loading subscriptions.
-  public static function instance($domain, $subscriber_id, PuSHSubscriptionsInterface $subscriptions) {
-    static $subscribers;
-    if (!isset($subscriber[$domain][$subscriber_id])) {
-      $subscriber = new SlingSubscriber($domain, $subscriber_id, $subscriptions);
-    }
-    return $subscriber;
+function slingshotsms_receive($importer, $feed_nid = 0) {
+  $feed_nid = 4;
+  if ($importer->fetcher instanceof FeedsSlingshotFetcher) {
+  // No subscription notification has ben sent, we are being notified.
+    //try {
+      feeds_source($importer->id, $feed_nid)->import();
+    //}
+    //catch (Exception $e) {
+    //  // In case of an error, respond with a 503 Service (temporary) unavailable.
+    //  header('HTTP/1.1 503 "Not Found"', null, 503);
+    //  exit();
+    //}
   }
-    protected function __construct($domain, $subscriber_id, PuSHSubscriptionsInterface $subscriptions) {
-    $this->domain = $domain;
-    $this->subscriber_id = $subscriber_id;
-    $this->subscriptions = $subscriptions;
-  }
-   */
+}
 
-  /**
-   * Receive a notification.
-   */
-  public function receive() {
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-      return file_get_contents('php://input');
-    }
-    return FALSE;
-  }
+/**
+ * Menu loader for slingshot feeds
+ * @param $feed_id
+ *  Assumed to be the feed id
+ */
+function slingshotsms_node_load($nid) {
+  return $nid;
+}
+
+/**
+ * Menu loader for slingshot feeds
+ * @param $feed_id
+ *  Assumed to be the feed id
+ */
+function slingshotsms_slingshot_feed_load($feed_id) {
+  return feeds_importer($feed_id);
+}
+
+/**
+ * Implementation of hook_feeds_importer_default().
+ */
+function slingshotsms_feeds_plugins() {
+  module_load_include('inc', 'slingshotsms', 'slingshotsms.plugins');
+  $args = func_get_args();
+  return call_user_func_array('_slingshotsms_feeds_plugins', $args);
 }

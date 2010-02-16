@@ -25,9 +25,12 @@ function _slingshotsms_feeds_importer_default() {
     'name' => 'Slingshot',
     'description' => 'Imports items from SMS',
     'fetcher' => array(
-      'plugin_key' => 'FeedsHTTPFetcher',
+      'plugin_key' => 'FeedsSlingshotFetcher',
       'config' => array(
         'auto_detect_feeds' => FALSE,
+        'use_keyauth' => FALSE,
+        'keyauth_public' => '',
+        'subscription_period' => 86400,
       ),
     ),
     'parser' => array(

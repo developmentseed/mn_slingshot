@@ -1,39 +1,46 @@
 <?php
 
-feeds_include_library('PushSubscriber.inc', 'PushSubscriber');
+/**
+ * @file
+ * Pubsubhubbub subscriber library.
+ */
 
 /**
- * Publish/Subscribe fetcher. Supports at the moment only PubSubHubbub (PuSH).
+ * POST fetcher. Based off of PuSH
  */
 class FeedsSlingshotFetcher extends FeedsHTTPFetcher {
+
+  /**
+   * Receive a notification.
+   */
+  public function receive() {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      keyauth_include();
+      $post_input = file_get_contents('php://input');
+      $query_variables = array();
+      parse_str($post_input, $query_variables);
+      if(keyauth_verify(
+        "acf8b2bb295ccb58c1ad4e3a376a81cb", 
+        $query_variables['message'], 
+        $query_variables['nonce'],
+        $query_variables['timestamp'],
+        $query_variables['hash'])) {
+          $item = $query_variables['message'];
+          return array($item);
+      }
+    }
+    return FALSE;
+  }
 
   /**
    * Implementation of FeedsFetcher::fetch().
    */
   public function fetch(FeedsSource $source) {
     $source_config = $source->getConfigFor($this);
-    // Handle fat ping if present, otherwise pass up to HTTP fetcher.
-    if ($raw = feeds_push_subscriber($this->id, $source->feed_nid)->receive()) {
-      return new FeedsImportBatch($source_config['source'], NULL, $raw);
-    }
-    return parent::fetch($source);
+    $raw = $this->receive();
+    return new FeedsImportBatch($source_config['source'], NULL, $raw);
+    //return parent::fetch($source);
   }
-
-  /**
-   * Override sourceSave() - subscribe to hub.
-   */
-  public function sourceSave(FeedsSource $source) {
-    $this->subscribe($source);
-  }
-
-  /**
-   * Override sourceDelete() - unsubscribe from hub.
-   */
-  public function sourceDelete(FeedsSource $source) {
-    $this->unsubscribe($source);
-  }
-
-
 
   /**
    * Return defaults for configuration.
@@ -50,9 +57,7 @@ class FeedsSlingshotFetcher extends FeedsHTTPFetcher {
    */
   public function configForm(&$form_state) {
     $form = parent::configForm($form_state);
-    $period = drupal_map_assoc(array(0, 900, 1800, 3600, 10800, 21600, 43200, 86400, 259200, 604800, 2419200), 'format_interval');
-    $period[FEEDS_SCHEDULE_NEVER] = t('Never renew');
-    $period[0] = t('Renew as often as possible');
+    /*
     $form['subscription_period'] = array(
       '#type' => 'select',
       '#title' => t('Renew subscription after'),
@@ -60,23 +65,7 @@ class FeedsSlingshotFetcher extends FeedsHTTPFetcher {
       '#description' => t('This is the minimum time that must elapse before a subscription is renewed.'),
       '#default_value' => $this->config['subscription_period'],
     );
+     */
     return $form;
   }
-
-  /**
-   * Verify a PubSubHubbub subscription request.
-   */
-  public function pushVerifySubscriptionRequest($verify_fields, $feed_nid) {
-    feeds_push_subscriber($this->id, $feed_nid)->verifySubscriptionRequest($verify_fields);
-  }
-}
-
-/**
- * Create a PubSubHubbub subscriber.
- *
- * @return PushSubscriber
- *   A PushSubscriber object.
- */
-function feeds_push_subscriber($id, $subscriber_id) {
-  return PushSubscriber::instance($id, $subscriber_id, PuSHSubscriptions::instance());
 }
