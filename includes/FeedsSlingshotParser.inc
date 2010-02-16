@@ -3,25 +3,15 @@
 /**
  * Parses a given file as a CSV file.
  */
-class FeedsSlingshotParser extends ExtractorSyndicationParser {
+class FeedsSlingshotParser extends FeedsParser {
 
   /**
   * Parses a raw string and returns a Feed object from it.
   */
-  public function parse(FeedsFetcherResult $fetcherResult, FeedsSource $source) {
+  public function parse(FeedsImportBatch $batch, FeedsSource $source) {
     $items = array();
-
-    // Parse post request
-    // Test with
-    // curl -d "sender=202-330-3006&timestamp=`date +%s`&text=Lorem%20Ipsum%20Chicago" http://example.com/slingshot/post/[node id]
-    $items[] = array(
-      'title' => $fetcherResult->value['sender'],
-      'timestamp' => time(),
-      'description' => $fetcherResult->value['text'],
-    );
-
-    // Return result.
-    return new FeedsParserResult(array('items' => $items));
+    $raw = $batch->getRaw();
+   	$batch->addItem($raw[0]);
   }
 
   public function getMappingSources() {
@@ -39,6 +29,7 @@ class FeedsSlingshotParser extends ExtractorSyndicationParser {
         'description' => t('Full text of the SMS Message'),
       ),
     );
-    return parent::getMappingSources() + $sources;
+	return $sources;
+    //return parent::getMappingSources() + $sources;
   }
 }

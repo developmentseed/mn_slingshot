@@ -24,7 +24,16 @@ function _slingshotsms_feeds_plugins() {
       'path' => $path,
     ),
   );
-
+  $info['FeedsSlingshotParser'] = array(
+    'name' => 'Slingshot parser',
+    'description' => 'Parse SMS Data from Slingshot.',
+    'handler' => array(
+      'parent' => 'FeedsParser',
+      'class' => 'FeedsSlingshotParser',
+      'file' => 'FeedsSlingshotParser.inc',
+      'path' => $path,
+    ),
+  );
   return $info;
 }
 

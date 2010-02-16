@@ -25,7 +25,8 @@ class FeedsSlingshotFetcher extends FeedsHTTPFetcher {
         $query_variables['nonce'],
         $query_variables['timestamp'],
         $query_variables['hash'])) {
-          $item = $query_variables['message'];
+          $item = array();
+          parse_str($query_variables['message'], $item);
           return array($item);
       }
     }
