@@ -15,6 +15,24 @@ function slingshotsms_strongarm() {
 }
 
 /**
+ * Implementation of hook_enable().
+ */
+function slingshotsms_enable() {
+  // Create an example channel.
+  $nid = db_result(db_query_range("SELECT nid FROM {node} WHERE type = 'slingshot_feed'", 0, 1));
+  if (!$nid) {
+    global $user;
+    $node = new stdClass();
+    $node->uid = $user->uid;
+    $node->title = "SlingshotSMS";
+    $node->type = 'slingshotsms_feed';
+    $node->body = "The default SlingshotSMS Feed";
+    node_save($node);
+    variable_set('slingshotsms_feed_nid', $node->nid);
+  }
+}
+
+/**
  * Implementation of hook_menu()
  */
 function slingshotsms_menu() {
@@ -109,6 +127,6 @@ function slingshotsms_views_default_views_alter(&$views) {
   // Add Slingshot Feeds to sidbar feed block
   $views['mn_feeds']->display['default']->display_options['filters']['type']['value'] = array(
     'feed' => 'feed',
-    'slingshotfeed' => 'slingshotfeed',
+    'slingshot_feed' => 'slingshot_feed',
   );
 }

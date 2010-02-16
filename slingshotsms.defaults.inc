@@ -67,7 +67,7 @@ function _slingshotsms_feeds_importer_default() {
         ),
       ),
     ),
-    'content_type' => 'slingshotfeed',
+    'content_type' => 'slingshot_feed',
     'update' => 0,
     'import_period' => '-1',
     'expire_period' => 3600,

@@ -42,7 +42,7 @@ function slingshot_config_form() {
   }
 
   // TODO derive correct node id
-  $endpoint = $base_root . base_path() . 'slingshot/slingshot/4';
+  $endpoint = $base_root . base_path() . 'slingshot/slingshot/' . variable_get('slingshotsms_feed_nid', '');
   $form = array();
   $form['slingshot_snippet'] = array(
     '#value' => "<textarea cols='80' rows='5'>
