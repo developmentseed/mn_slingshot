@@ -1,6 +1,6 @@
 <?php
 
-define('PACKAGED_PUBLIC_KEY', '6d4c2ff9361f6a0f778794994af952defab4e1df');
+define('PACKAGED_PRIVATE_KEY', '6d4c2ff9361f6a0f778794994af952defab4e1df');
 define('PACKAGED_PUBLIC_KEY_NAME', 'Slingshot');
 
 /**
@@ -13,6 +13,15 @@ define('PACKAGED_PUBLIC_KEY_NAME', 'Slingshot');
  */
 function is_slingshot_key($key) {
   return $key['title'] == 'Slingshot';
+}
+
+function slingshotsms_help($path, $arg) {
+  switch($path) {
+    case 'admin/settings/slingshot':
+      return '<p>'. t('SlingshotSMS Configuration: Copy and paste the 
+      code below into slingshotsms.txt for your modem
+      server') .'</p>';
+  }
 }
 
 /**
@@ -35,11 +44,6 @@ function slingshot_config_form() {
   // TODO derive correct node id
   $endpoint = $base_root . base_path() . 'slingshot/slingshot/4';
   $form = array();
-  $form['slingshot_help'] = array(
-    '#value' => '<p>SlingshotSMS Configuration: Copy and paste the 
-    code below into slingshotsms.txt for your modem
-    server</p>'
-  );
   $form['slingshot_snippet'] = array(
     '#value' => "<textarea cols='80' rows='5'>
 [hmac]
