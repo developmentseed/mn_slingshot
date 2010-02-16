@@ -1,5 +1,8 @@
 <?php
 
+define('PACKAGED_PUBLIC_KEY', '6d4c2ff9361f6a0f778794994af952defab4e1df');
+define('PACKAGED_PUBLIC_KEY_NAME', 'Slingshot');
+
 /**
  * @file
  * Minimal Slingshot UI
@@ -20,6 +23,15 @@ function slingshot_config_form() {
   keyauth_include();
   $all_keys = keyauth_all_keys();
   $slingshot_key = current(array_filter($all_keys, 'is_slingshot_key'));
+
+  // Regenerate key on first pageload so that each installation
+  // is secure
+  if ($slingshot_key['private_key'] == PACKAGED_PRIVATE_KEY) {
+    keyauth_save($slingshot_key);
+    keyauth_regenerate($slingshot_key['public_key']);
+    return slingshot_config_form();
+  }
+
   // TODO derive correct node id
   $endpoint = $base_root . base_path() . 'slingshot/slingshot/4';
   $form = array();
