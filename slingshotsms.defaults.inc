@@ -13,6 +13,9 @@ function _slingshotsms_ctools_plugin_api() {
   else if ($module == "keyauth" && $api == "keyauth_key_default") {
     return array("version" => 1);
   }
+  else if ($module == "strongarm" && $api == "strongarm") {
+    return array("version" => 1);
+  }
 }
 
 /**

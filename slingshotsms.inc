@@ -1,6 +1,20 @@
 <?php
 
 /**
+ * Implementation of hook_strongarm().
+ */
+function slingshotsms_strongarm() {
+  $export = array();
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'feeds_data_slingshot';
+  $strongarm->value = 'feeds_data_syndication';
+  $export['feeds_data_slingshot'] = $strongarm;
+  return $export;
+}
+
+/**
  * Implementation of hook_menu()
  */
 function slingshotsms_menu() {
