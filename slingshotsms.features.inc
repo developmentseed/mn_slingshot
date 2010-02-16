@@ -26,3 +26,12 @@ function slingshotsms_keyauth_key_default() {
   $args = func_get_args();
   return call_user_func_array('_slingshotsms_keyauth_key_default', $args);
 }
+
+/**
+ * Implementation of hook_node_info().
+ */
+function slingshotsms_node_info() {
+  module_load_include('inc', 'slingshotsms', 'slingshotsms.features.node');
+  $args = func_get_args();
+  return call_user_func_array('_slingshotsms_node_info', $args);
+}

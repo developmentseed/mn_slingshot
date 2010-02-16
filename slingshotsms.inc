@@ -101,3 +101,14 @@ function slingshotsms_feeds_plugins() {
   $args = func_get_args();
   return call_user_func_array('_slingshotsms_feeds_plugins', $args);
 }
+
+/**
+  * Implementation of hook_views_default_views_alter().
+  */
+function slingshotsms_views_default_views_alter(&$views) {
+  // Add Slingshot Feeds to sidbar feed block
+  $views['mn_feeds']->display['default']->display_options['filters']['type']['value'] = array(
+    'feed' => 'feed',
+    'slingshotfeed' => 'slingshotfeed',
+  );
+}
