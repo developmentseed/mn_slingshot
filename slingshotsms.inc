@@ -25,7 +25,7 @@ function slingshotsms_enable() {
     $node = new stdClass();
     $node->uid = $user->uid;
     $node->title = "SlingshotSMS";
-    $node->type = 'slingshotsms_feed';
+    $node->type = 'slingshot_feed';
     $node->body = "The default SlingshotSMS Feed";
     node_save($node);
     variable_set('slingshotsms_feed_nid', $node->nid);
