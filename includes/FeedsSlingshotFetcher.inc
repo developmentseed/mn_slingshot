@@ -1,8 +1,9 @@
 <?php
+// $Id$
 
 /**
  * @file
- * Pubsubhubbub subscriber library.
+ * Passthrough fetcher for SlingshotSMS
  */
 
 /**
@@ -19,7 +20,7 @@ class FeedsSlingshotFetcher extends FeedsHTTPFetcher {
       $post_input = file_get_contents('php://input');
       $query_variables = array();
       parse_str($post_input, $query_variables);
-      if(keyauth_verify(
+      if (keyauth_verify(
         "acf8b2bb295ccb58c1ad4e3a376a81cb", 
         $query_variables['message'], 
         $query_variables['nonce'],

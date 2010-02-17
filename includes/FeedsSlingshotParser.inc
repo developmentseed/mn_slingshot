@@ -1,4 +1,10 @@
 <?php
+// $Id$
+
+/**
+ * @file
+ * Passthrough parser for SlingshotSMS
+ */
 
 /**
  * Parses a given file as a CSV file.
@@ -29,7 +35,6 @@ class FeedsSlingshotParser extends FeedsParser {
         'description' => t('Full text of the SMS Message'),
       ),
     );
-	return $sources;
-    //return parent::getMappingSources() + $sources;
+	  return $sources;
   }
 }
