@@ -16,15 +16,6 @@ function is_slingshot_key($key) {
   return $key['title'] == 'Slingshot';
 }
 
-function slingshotsms_help($path, $arg) {
-  switch ($path) {
-    case 'admin/settings/slingshot':
-      return '<p>'. t('SlingshotSMS Configuration: Copy and paste the 
-      code below into slingshotsms.txt for your modem
-      server') .'</p>';
-  }
-}
-
 /**
  * Main slingshot configuration form
  */
@@ -42,10 +33,14 @@ function slingshot_config_form() {
     return slingshot_config_form();
   }
 
-  // TODO derive correct node id
   $endpoint = $base_root . base_path() . 
     'slingshot/slingshot/' . variable_get('slingshotsms_feed_nid', '');
   $form = array();
+  $form['slingshot_help'] = array(
+    '#value' => '<p>' . t('SlingshotSMS Configuration: Copy and paste the 
+      code below into slingshotsms.txt for your modem
+      server') . '</p>'
+    );
   $form['slingshot_snippet'] = array(
     '#value' => "<textarea cols='80' rows='5'>
 [hmac]
