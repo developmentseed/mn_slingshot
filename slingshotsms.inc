@@ -89,15 +89,6 @@ function slingshotsms_receive($importer, $feed_nid = 0) {
  * @param $feed_id
  *  Assumed to be the feed id
  */
-function slingshotsms_node_load($nid) {
-  return $nid;
-}
-
-/**
- * Menu loader for slingshot feeds
- * @param $feed_id
- *  Assumed to be the feed id
- */
 function slingshotsms_slingshot_feed_load($feed_id) {
   return feeds_importer($feed_id);
 }
