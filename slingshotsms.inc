@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 /**
  * Implementation of hook_strongarm().
@@ -27,7 +28,6 @@ function slingshotsms_enable() {
     $node->title = "SlingshotSMS";
     $node->type = 'slingshot_feed';
     $node->body = "The default SlingshotSMS Feed";
-    node_save($node);
     variable_set('slingshotsms_feed_nid', $node->nid);
   }
 }

@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 define('PACKAGED_PRIVATE_KEY', '6d4c2ff9361f6a0f778794994af952defab4e1df');
 define('PACKAGED_PUBLIC_KEY_NAME', 'Slingshot');
@@ -16,7 +17,7 @@ function is_slingshot_key($key) {
 }
 
 function slingshotsms_help($path, $arg) {
-  switch($path) {
+  switch ($path) {
     case 'admin/settings/slingshot':
       return '<p>'. t('SlingshotSMS Configuration: Copy and paste the 
       code below into slingshotsms.txt for your modem
@@ -42,7 +43,8 @@ function slingshot_config_form() {
   }
 
   // TODO derive correct node id
-  $endpoint = $base_root . base_path() . 'slingshot/slingshot/' . variable_get('slingshotsms_feed_nid', '');
+  $endpoint = $base_root . base_path() . 
+    'slingshot/slingshot/' . variable_get('slingshotsms_feed_nid', '');
   $form = array();
   $form['slingshot_snippet'] = array(
     '#value' => "<textarea cols='80' rows='5'>

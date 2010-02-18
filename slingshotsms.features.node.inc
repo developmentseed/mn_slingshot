@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 /**
  * Helper to implementation of hook_node_info().
