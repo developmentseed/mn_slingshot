@@ -79,6 +79,7 @@ function slingshotsms_menu() {
  *  The node id of the feed node
  */
 function slingshotsms_receive($importer, $feed_nid = 0) {
+  // TODO FIX FIX FIX
   $feed_nid = 4;
   if ($importer->fetcher instanceof FeedsSlingshotFetcher) {
   // No subscription notification has ben sent, we are being notified.

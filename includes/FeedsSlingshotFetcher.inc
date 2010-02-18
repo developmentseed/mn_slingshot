@@ -5,6 +5,20 @@
  * Pubsubhubbub subscriber library.
  */
 
+class FeedsSlingshotBatch extends FeedsImportBatch {
+  /**
+   * Constructor.
+   *
+   * Either $url or $file_path must be given.
+   */
+  public function __construct($url = NULL, $file_path = NULL, $raw = NULL) {
+    $this->url = $url;
+    $this->file_path = $file_path;
+    $this->raw = $raw;
+    $this->items = array();
+  }
+}
+
 /**
  * POST fetcher. Based off of PuSH
  */
@@ -39,8 +53,7 @@ class FeedsSlingshotFetcher extends FeedsHTTPFetcher {
   public function fetch(FeedsSource $source) {
     $source_config = $source->getConfigFor($this);
     $raw = $this->receive();
-    return new FeedsImportBatch($source_config['source'], NULL, $raw);
-    //return parent::fetch($source);
+    return new FeedsSlingshotBatch($source_config['source'], NULL, $raw);
   }
 
   /**
@@ -58,15 +71,6 @@ class FeedsSlingshotFetcher extends FeedsHTTPFetcher {
    */
   public function configForm(&$form_state) {
     $form = parent::configForm($form_state);
-    /*
-    $form['subscription_period'] = array(
-      '#type' => 'select',
-      '#title' => t('Renew subscription after'),
-      '#options' => $period,
-      '#description' => t('This is the minimum time that must elapse before a subscription is renewed.'),
-      '#default_value' => $this->config['subscription_period'],
-    );
-     */
     return $form;
   }
 }
