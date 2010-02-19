@@ -1,5 +1,0 @@
-<?php
-// $Id$
-
-include_once('slingshotsms.inc');
-include_once('slingshotsms.features.inc');
