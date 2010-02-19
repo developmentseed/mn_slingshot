@@ -7,4 +7,4 @@ SlingshotSMS integration for Managing News
 4. Your Managing News installation will need to be HTTP-accessible
    from SlingshotSMS.
 5. This module provides verification but not authentication. 
-   Use HTTPS if you need security.
+   Use HTTPS for security.

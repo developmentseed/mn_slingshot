@@ -1,0 +1,5 @@
+<?php
+// $Id$
+
+include_once('mn_slingshot.inc');
+include_once('mn_slingshot.features.inc');
